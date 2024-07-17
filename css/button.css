@@ -1,0 +1,126 @@
+
+/* CSS */
+.control-button {
+  position: relative;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  outline-offset: 4px;
+  transition: filter 250ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.control-button-shadow {
+  position: absolute;
+  /* top: 0; */
+  top: 10;
+  left: 0;
+  width: 100%;
+  /* height: 100%; */
+  height: 80%;
+  border-radius: 12px;
+  background: hsl(0deg 0% 0% / 0.25);
+  will-change: transform;
+  transform: translateY(2px);
+  /* transform: translateY(2px); */
+  transition:
+    transform
+    600ms
+    cubic-bezier(.3, .7, .4, 1);
+}
+
+.control-button-edge {
+  position: absolute;
+  /* top: 0; */
+  top: 10;
+  left: 0;
+  width: 100%;
+  /* height: 100%; */
+  height: 80%;
+  border-radius: 12px;
+  background: linear-gradient(
+    to left,
+    /* hsl(340deg 100% 16%) 0%,
+    hsl(340deg 100% 32%) 8%,
+    hsl(340deg 100% 32%) 92%,
+    hsl(340deg 100% 16%) 100% */
+    hsl(0 0% 16%) 0%,
+    hsl(0 0% 32%) 8%,
+    hsl(0 0% 32%) 92%,
+    hsl(0 0% 16%) 100%
+  );
+}
+
+.control-button-front {
+  display: block;
+  position: relative;
+  /* padding: 12px 27px; */
+  padding: 8px 12px;
+  border-radius: 12px;
+  /* font-size: 1.1rem; */
+  color: rgb(197, 196, 196);
+  /* background: hsl(345deg 100% 47%); */
+  background: hsl(0, 0%, 20%);
+  background-image: url('../images/bedge-grunge.png');
+  /* background-size: cover;
+  background-repeat: no-repeat; 
+  background-position: center; */
+
+  will-change: transform;
+  /* transform: translateY(-4px); */
+  transform: translateY(-2px);
+  transition:
+    transform
+    600ms
+    cubic-bezier(.3, .7, .4, 1);
+}
+
+@media (min-width: 768px) {
+  .control-button-front {
+    /* font-size: 1.25rem; */
+    /* padding: 12px 42px; */
+    padding: 8px 12px;
+  }
+}
+
+.control-button:hover {
+  filter: brightness(110%);
+  -webkit-filter: brightness(110%);
+}
+
+.control-button:hover .control-button-front {
+  /* transform: translateY(-6px); */
+  transform: translateY(-2px);
+  transition:
+    transform
+    250ms
+    cubic-bezier(.3, .7, .4, 1.5);
+}
+
+.control-button:active .control-button-front {
+  /* transform: translateY(-2px); */
+  transform: translateY(2px);
+  transition: transform 34ms;
+}
+
+.control-button:hover .control-button-shadow {
+  transform: translateY(4px);
+  /* transform: translateY(4px); */
+  transition:
+    transform
+    250ms
+    cubic-bezier(.3, .7, .4, 1.5);
+}
+
+.control-button:active .control-button-shadow {
+  transform: translateY(1px);
+  /* transform: translateY(1px); */
+  transition: transform 34ms;
+}
+
+.button-1:focus:not(:focus-visible) {
+  outline: none;
+}

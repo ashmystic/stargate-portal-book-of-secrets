@@ -1,9 +1,24 @@
 <!-- <html><head><base href="https://websim.ai"><title>Book of Secrets Volume 1: Stargate Portal</title><style> -->
 <html><head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>v0.8.2 Book of Secrets Volume 1: Stargate Portal</title><style>
+    <title>v0.8.2 Book of Secrets Volume 1: Stargate Portal</title>
+    <link rel="stylesheet" href="css/button.css">
+    <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
     
+    @font-face {
+      font-family: 'Obelisk';
+      src: url('fonts/obelisk-mxvv-font/ObeliskMxvvRegular-RGj6.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'Stickplan';
+      src: url('fonts/stickplan-font/StickplanDemo-DOELx.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
     body, html {
         margin: 0;
         padding: 0;
@@ -12,8 +27,12 @@
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
-        background-color: #000;
-        font-family: 'Cinzel', serif;
+        /* background-color: #000; */
+        background-color: #202020;
+        /* font-family: 'Cinzel', serif; */
+        /* font-family: 'Stickplan', normal; */
+        /* font-family: 'Stormning', normal; */
+        font-family: 'Obelisk', normal;
         color: #fff;
     }
     
@@ -88,9 +107,11 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 12px;
+        /* font-size: 12px; */
+        font-size: 16px;
         font-weight: 700;
-        color: #4285f4;
+        /* color: #4285f4; */
+        color: rgb(150, 150, 150);
         grid-column: span 3;
         height: 30px;
     }
@@ -98,18 +119,22 @@
     .button-grid button {
         width: 100%;
         height: 100%;
-        background-color: #1a1a1a;
+        /* background-color: #1a1a1a; */
         color: white;
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        font-size: 12px;
+        /* font-size: 12px; */
+        font-size: 14px;
         transition: background-color 0.3s;
-        font-family: 'Cinzel', serif;
+        /* font-family: 'Cinzel', serif; */
+        /* font-family: 'Stickplan', normal; */
+        font-family: 'Obelisk', normal;
+        
     }
     
     .button-grid button:hover {
-        background-color: #3367d6;
+        /* background-color: #3367d6; */
     }
     
     .info {
@@ -166,12 +191,33 @@
         color: #fff;
         font-size: 14px;
     }
+
+    .textured-text {
+
+      color: transparent;
+      background-image: url('images/bedge-grunge.png');
+      background-size: cover;
+      background-clip: text;
+      -webkit-background-clip: text; /* For Safari compatibility */
+      -webkit-text-fill-color: transparent; /* For Safari compatibility */
+      filter: brightness(1.5);
+    }
+    .clip-text {
+    
+        color: rgb(150, 150, 150);;
+        -webkit-text-fill-color: transparent;
+        background: -webkit-linear-gradient(transparent, transparent),
+        url('images/bedge-grunge.png') repeat;
+        background: -o-linear-gradient(transparent, transparent);
+        -webkit-background-clip: text;
+        filter: brightness(1.5);
+    }
+    
     </style></head>
     <body>
     <!-- <div class="header">
         <h1>WebSim Smooth Ripple Transition with Button Grid</h1>
     </div> -->
-    
     <div class="main-container">
         <!-- <div class="control-panel">
             <button id="toggleRipples">Enable Ripples</button>
@@ -181,14 +227,57 @@
             <canvas id="glCanvas" width="320" height="568"></canvas>
             <img id="displayImage" class="hidden-image" src="images/giza.WEBP" alt="Giza" width="320" height="320">
             <div class="button-grid">
-                <label>Terra</label>
-                <button id="btnGiza">Giza</button>
+                <label class="clip-text">Terra</label>
+                <!-- <button id="btnGiza">Giza</button>
                 <button id="btnTeotihuacan">Teotihuacan</button>
                 <button id="btnGobekliTepe">Gobekli Tepe</button>
                 <label>Exoterra</label>
                 <button id="btnNibiru">Nibiru</button>
-                <button id="btnPleiades">Pleiades</button>
-                <button id="btnSirius">Sirius</button>
+                <button id="btnPleiades">Pleiades</button> 
+                <button id="btnSirius">Sirius</button> -->
+                <button id="btnGiza" class="control-button" role="button">
+                    <span class="control-button-shadow"></span>
+                    <span class="control-button-edge"></span>
+                    <span class="control-button-front text">
+                      Giza
+                    </span>
+                </button>
+                <button id="btnTeotihuacan" class="control-button" role="button">
+                    <span class="control-button-shadow"></span>
+                    <span class="control-button-edge"></span>
+                    <span class="control-button-front text">
+                      Teotihuacan
+                    </span>
+                </button>
+                <button id="btnGobekliTepe" class="control-button" role="button">
+                    <span class="control-button-shadow"></span>
+                    <span class="control-button-edge"></span>
+                    <span class="control-button-front text">
+                      Gobekli Tepe
+                    </span>
+                </button>
+                <label class="clip-text">Exoterra</label>
+                <button id="btnNibiru" class="control-button" role="button">
+                    <span class="control-button-shadow"></span>
+                    <span class="control-button-edge"></span>
+                    <span class="control-button-front text">
+                      Nibiru
+                    </span>
+                </button>
+                <button id="btnPleiades" class="control-button" role="button">
+                    <span class="control-button-shadow"></span>
+                    <span class="control-button-edge"></span>
+                    <span class="control-button-front text">
+                      Pleiades
+                    </span>
+                </button>
+                <button id="btnSirius" class="control-button" role="button">
+                    <span class="control-button-shadow"></span>
+                    <span class="control-button-edge"></span>
+                    <span class="control-button-front text">
+                      Sirius
+                    </span>
+                </button>
             </div>
             <div id="particleContainer" class="particle-container">
                 <!-- particles go here -->
