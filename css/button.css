@@ -58,7 +58,7 @@
   display: block;
   position: relative;
   /* padding: 12px 27px; */
-  padding: 8px 12px;
+  padding: 6px 6px;
   border-radius: 12px;
   /* font-size: 1.1rem; */
   /* color: rgb(197, 196, 196); */
@@ -73,7 +73,6 @@
   /* , 1px 1px 1px #000; */
     text-shadow: 1px 1px 1px rgb(123, 123, 123);
     box-shadow: inset 1px 1px 5px rgba(0, 0, 0, 0.3), inset -1px -1px 5px rgba(255, 255, 255, 0.5);
-
 
   /* background: hsl(345deg 100% 47%); */
   background: hsl(0, 0%, 20%);
@@ -95,7 +94,7 @@
   .control-button-front {
     /* font-size: 1.25rem; */
     /* padding: 12px 42px; */
-    padding: 8px 12px;
+    /* padding: 8px 6px; */
   }
 }
 
