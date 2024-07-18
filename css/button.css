@@ -103,6 +103,11 @@
   -webkit-filter: brightness(110%);
 }
 
+.control-button:disabled {
+    filter: brightness(60%);
+  -webkit-filter: brightness(60%);
+}
+
 .control-button:hover .control-button-front {
   /* transform: translateY(-6px); */
   transform: translateY(-2px);
@@ -133,6 +138,6 @@
   transition: transform 34ms;
 }
 
-.button-1:focus:not(:focus-visible) {
+.control-button:focus:not(:focus-visible) {
   outline: none;
 }

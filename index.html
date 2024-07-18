@@ -419,8 +419,13 @@
     let currentWaveIndex = 0;
     let rippleIntensity = 0.0; 
     let targetRippleIntensity = 0.0; 
+    let transitionTimeout = null;
     let imageTimeout = null;
+    let deactivateStargateTimeout = null;
     let particlesVisible = false;
+    let rippleTransitionTimeMS = 3000;
+    let imageTimeoutTimeMS = 15000;
+    let deactivateStargateTimeoutTimeMS = 12000;
     
     function updateWaves() {
         const currentTime = (Date.now() - startTime) / 1000;
@@ -453,6 +458,12 @@
     const displayImage = document.getElementById('displayImage');
     const particleContainer = document.getElementById('particleContainer');
    
+    const buttons = document.querySelectorAll('.button-grid button');
+    function toggleButtonsDisability() {
+    buttons.forEach(btn => {
+        btn.disabled = !btn.disabled;
+    });
+}
    /*
     const toggleButton = document.getElementById('toggleRipples');
     toggleButton.addEventListener('click', () => {
@@ -505,22 +516,30 @@
     createParticles();
     
     const transitionWithRipples = (src, alt, particleColor = 'gold') => {
+        if(transitionTimeout !== null)
+        {
+            // return;
+        }
+
         if (imageTimeout) {
             clearTimeout(imageTimeout);
         }
     
         hideImageAndParticles();
         targetRippleIntensity = 1.0;
-        setTimeout(() => {
+        toggleButtonsDisability(); // Disable buttons while loading
+        transitionTimeout = setTimeout(() => {
             showImageAndParticles(src, alt, particleColor);
             createParticles(particleColor);
             imageTimeout = setTimeout(() => {
                 hideImageAndParticles();
-                setTimeout(() => {
+                deactivateStargateTimeout = setTimeout(() => {
                     targetRippleIntensity = 0.0;
-                }, 12000); // transition time from image inactivity to black screen (12s)
-            }, 15000); // time image stays up before automatically fading out (15s)
-        }, 3000); // transition time from one image to the next (3s)
+                    }, deactivateStargateTimeoutTimeMS); // transition time from image inactivity to black screen (12s)
+                    }, imageTimeoutTimeMS); // time image stays up before automatically fading out (15s)
+                toggleButtonsDisability(); // Disable buttons while loading
+                // transitionTimeout = null;
+        }, rippleTransitionTimeMS); // transition time from one image to the next (3s)
     };
     
     // document.getElementById('btnGiza').addEventListener('click', () => transitionWithRipples('https://i.ibb.co/r62t5K9/giza.webp', 'Giza Pyramids under a clear sky'));
