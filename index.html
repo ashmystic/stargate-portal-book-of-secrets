@@ -98,6 +98,7 @@
         grid-template-rows: repeat(2, 1fr 1fr);
         gap: 2px;
         padding: 2px;
+        padding-bottom: 10px;
         width: 100%;
         height: 142px;
         box-sizing: border-box;
@@ -113,7 +114,8 @@
         /* color: #4285f4; */
         color: rgb(150, 150, 150);
         grid-column: span 3;
-        height: 30px;
+        padding-top: 5px;
+        /* height: 30px; */
     }
     
     .button-grid button {
@@ -516,8 +518,7 @@
     createParticles();
     
     const transitionWithRipples = (src, alt, particleColor = 'gold') => {
-        if(transitionTimeout !== null)
-        {
+        if(transitionTimeout !== null) {
             // return;
         }
 
