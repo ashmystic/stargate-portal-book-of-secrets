@@ -28,21 +28,28 @@ self.addEventListener('install', event => {
   });
 
   self.addEventListener('fetch', event => {
+    console.log('Fetching:', event.request.url);
     event.respondWith(
       caches.match(event.request)
         .then(response => {
-          // If a cache match is found, return it
+          // Log the matched response
           if (response) {
+            console.log('Serving from cache:', response.url);
             return response;
           }
-          // Otherwise, fetch from the network
+          // Log if fetching from network
+          console.log('Fetching from network:', event.request.url);
           return fetch(event.request).catch(() => {
-            // Optionally, return a fallback page if fetching fails
+            console.log('Network request failed. Serving offline page.');
             return caches.match('/stargate-portal-book-of-secrets/offline.html');
           });
         })
+        .catch(error => {
+          console.error('Fetch failed:', error);
+          return caches.match('/stargate-portal-book-of-secrets/offline.html');
+        })
     );
-  });  
+  });
 
   /*
 self.addEventListener('fetch', function(event) {
