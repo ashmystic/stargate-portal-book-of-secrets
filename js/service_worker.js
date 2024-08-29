@@ -1,5 +1,6 @@
-var CACHE_NAME = 'stargateportal-cache-v2';
+var CACHE_NAME = 'stargateportal-cache-v1';
 var urlsToCache = [
+  '/stargate-portal-book-of-secrets/',
   '/stargate-portal-book-of-secrets/index.html',
   '/stargate-portal-book-of-secrets/css/button.css',
   '/stargate-portal-book-of-secrets/images/bedge-grunge.png',
