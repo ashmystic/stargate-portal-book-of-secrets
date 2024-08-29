@@ -18,6 +18,7 @@ self.addEventListener('install', event => {
     event.waitUntil(
       caches.open(CACHE_NAME)
         .then(cache => {
+            console.log('installing cache : ' + CACHE_NAME);
           return Promise.all(urlsToCache.map(url => {
             return cache.add(url).catch(error => {
               console.error('Failed to cache:', url, error);
@@ -49,6 +50,11 @@ self.addEventListener('install', event => {
           return caches.match('/stargate-portal-book-of-secrets/offline.html');
         })
     );
+  });
+
+  self.addEventListener('activate', event => {
+    console.log('activating cache : ' + CACHE_NAME);
+    event.waitUntil(self.clients.claim());
   });
 
   /*
