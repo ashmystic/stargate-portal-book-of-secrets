@@ -1,20 +1,12 @@
-<!-- <html><head><base href="https://websim.ai"><title>Book of Secrets Volume 1: Stargate Portal</title><style> -->
-<html><head>
+    <html lang="en" manifest="manifest.appcache">
+    <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>v0.8.2 Book of Secrets Volume 1: Stargate Portal</title>
+    <title>v0.8.3 Book of Secrets Volume 1: Stargate Portal</title>
     <link rel="stylesheet" href="css/button.css">
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
-    
     @font-face {
       font-family: 'Obelisk';
       src: url('fonts/obelisk-mxvv-font/ObeliskMxvvRegular-RGj6.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-    @font-face {
-      font-family: 'Stickplan';
-      src: url('fonts/stickplan-font/StickplanDemo-DOELx.ttf') format('truetype');
       font-weight: normal;
       font-style: normal;
     }
@@ -352,6 +344,21 @@
     </script>
     
     <script>
+    // Setup service worker for caching files
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/js/service_worker.js').then(function(registration) {
+            // Registration was successful
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }, function(err) {
+            // registration failed :(
+            console.log('ServiceWorker registration failed: ', err);
+        });
+        });
+    } else {
+        console.log('ServiceWorker not found in navigator');
+    }
+
     const canvas = document.getElementById('glCanvas');
     const gl = canvas.getContext('webgl');
     

@@ -1,0 +1,17 @@
+CACHE MANIFEST
+# Version 1.0
+
+CACHE:
+index.html
+css/button.css
+images/bedge-grunge.png
+images/giza.WEBP
+images/teotihuacan.WEBP
+images/gobekli-tepe.WEBP
+images/nibiru.WEBP
+images/pleiades.WEBP
+images/sirius.WEBP
+fonts/obelisk-mxvv-font/ObeliskMxvvRegular-RGj6.ttf
+
+NETWORK:
+*
