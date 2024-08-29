@@ -11,7 +11,7 @@ var urlsToCache = [
   '/stargate-portal-book-of-secrets/images/pleiades.WEBP',
   '/stargate-portal-book-of-secrets/images/sirius.WEBP',
   '/stargate-portal-book-of-secrets/fonts/obelisk-mxvv-font/ObeliskMxvvRegular-RGj6.ttf',
-  'stargate-portal-book-of-secrets/offline.html',
+  '/stargate-portal-book-of-secrets/offline.html',
 ];
 
 self.addEventListener('install', event => {
