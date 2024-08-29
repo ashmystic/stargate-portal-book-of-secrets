@@ -1,15 +1,15 @@
-var CACHE_NAME = 'stargateportal-cache-v1';
+var CACHE_NAME = 'stargateportal-cache-v2';
 var urlsToCache = [
-  '/index.html',
-  '/css/button.css',
-  '/images/bedge-grunge.png',
-  '/images/giza.WEBP',
-  '/images/teotihuacan.WEBP',
-  '/images/gobekli-tepe.WEBP',
-  '/images/nibiru.WEBP',
-  '/images/pleiades.WEBP',
-  '/images/sirius.WEBP',
-  '/fonts/obelisk-mxvv-font/ObeliskMxvvRegular-RGj6.ttf',
+  '/stargate-portal-book-of-secrets/index.html',
+  '/stargate-portal-book-of-secrets/css/button.css',
+  '/stargate-portal-book-of-secrets/images/bedge-grunge.png',
+  '/stargate-portal-book-of-secrets/images/giza.WEBP',
+  '/stargate-portal-book-of-secrets/images/teotihuacan.WEBP',
+  '/stargate-portal-book-of-secrets/images/gobekli-tepe.WEBP',
+  '/stargate-portal-book-of-secrets/images/nibiru.WEBP',
+  '/stargate-portal-book-of-secrets/images/pleiades.WEBP',
+  '/stargate-portal-book-of-secrets/images/sirius.WEBP',
+  '/stargate-portal-book-of-secrets/fonts/obelisk-mxvv-font/ObeliskMxvvRegular-RGj6.ttf',
 ];
 
 self.addEventListener('install', event => {
