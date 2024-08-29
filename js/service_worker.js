@@ -11,6 +11,7 @@ var urlsToCache = [
   '/stargate-portal-book-of-secrets/images/pleiades.WEBP',
   '/stargate-portal-book-of-secrets/images/sirius.WEBP',
   '/stargate-portal-book-of-secrets/fonts/obelisk-mxvv-font/ObeliskMxvvRegular-RGj6.ttf',
+  'stargate-portal-book-of-secrets/offline.html',
 ];
 
 self.addEventListener('install', event => {
@@ -26,6 +27,24 @@ self.addEventListener('install', event => {
     );
   });
 
+  self.addEventListener('fetch', event => {
+    event.respondWith(
+      caches.match(event.request)
+        .then(response => {
+          // If a cache match is found, return it
+          if (response) {
+            return response;
+          }
+          // Otherwise, fetch from the network
+          return fetch(event.request).catch(() => {
+            // Optionally, return a fallback page if fetching fails
+            return caches.match('/stargate-portal-book-of-secrets/offline.html');
+          });
+        })
+    );
+  });  
+
+  /*
 self.addEventListener('fetch', function(event) {
   event.respondWith(
     caches.match(event.request)
@@ -59,3 +78,4 @@ self.addEventListener('fetch', function(event) {
     })
   );
 });
+*/
