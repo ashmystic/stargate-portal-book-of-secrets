@@ -16,11 +16,10 @@ self.addEventListener('install', event => {
     event.waitUntil(
       caches.open(CACHE_NAME)
         .then(cache => {
-          return Promise.all(urlsToCache.map(url => {
-            return cache.add(url).catch(error => {
-              console.error('Failed to cache:', url, error);
-            });
-          }));
+          return cache.addAll(urlsToCache);
+        })
+        .catch(error => {
+          console.error('Failed to cache resources:', error);
         })
     );
   });
