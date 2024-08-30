@@ -1,24 +1,33 @@
 var CACHE_NAME = 'stargateportal-cache-v1';
 var urlsToCache = [
-  '/stargate-portal-book-of-secrets/',
-  '/stargate-portal-book-of-secrets/index.html',
-  '/stargate-portal-book-of-secrets/css/button.css',
-  '/stargate-portal-book-of-secrets/images/bedge-grunge.png',
-  '/stargate-portal-book-of-secrets/images/giza.WEBP',
-  '/stargate-portal-book-of-secrets/images/teotihuacan.WEBP',
-  '/stargate-portal-book-of-secrets/images/gobekli-tepe.WEBP',
-  '/stargate-portal-book-of-secrets/images/nibiru.WEBP',
-  '/stargate-portal-book-of-secrets/images/pleiades.WEBP',
-  '/stargate-portal-book-of-secrets/images/sirius.WEBP',
-  '/stargate-portal-book-of-secrets/fonts/obelisk-mxvv-font/ObeliskMxvvRegular-RGj6.ttf',
-  '/stargate-portal-book-of-secrets/offline.html',
+  './',
+  'index.html',
+  'css/button.css',
+  'images/bedge-grunge.png',
+  'images/giza.WEBP',
+  'images/teotihuacan.WEBP',
+  'images/gobekli-tepe.WEBP',
+  'images/nibiru.WEBP',
+  'images/pleiades.WEBP',
+  'images/sirius.WEBP',
+  'fonts/obelisk-mxvv-font/ObeliskMxvvRegular-RGj6.ttf',
+  'offline.html',
 ];
+
+// Set to true to enable logging, false to disable
+const loggingEnabled = true;
+
+function log(...args) {
+  if (loggingEnabled) {
+    console.log(...args);
+  }
+}
 
 self.addEventListener('install', event => {
     event.waitUntil(
       caches.open(CACHE_NAME)
         .then(cache => {
-            console.log('installing cache : ' + CACHE_NAME);
+            log('installing cache : ' + CACHE_NAME);
           return Promise.all(urlsToCache.map(url => {
             return cache.add(url).catch(error => {
               console.error('Failed to cache:', url, error);
@@ -29,19 +38,19 @@ self.addEventListener('install', event => {
   });
 
   self.addEventListener('fetch', event => {
-    console.log('Fetching:', event.request.url);
+    log('Fetching:', event.request.url);
     event.respondWith(
       caches.match(event.request)
         .then(response => {
           // Log the matched response
           if (response) {
-            console.log('Serving from cache:', response.url);
+            log('Serving from cache:', response.url);
             return response;
           }
           // Log if fetching from network
           console.log('Fetching from network:', event.request.url);
           return fetch(event.request).catch(() => {
-            console.log('Network request failed. Serving offline page.');
+            log('Network request failed. Serving offline page.');
             return caches.match('/stargate-portal-book-of-secrets/offline.html');
           });
         })
@@ -53,7 +62,7 @@ self.addEventListener('install', event => {
   });
 
   self.addEventListener('activate', event => {
-    console.log('activating cache : ' + CACHE_NAME);
+    log('activating cache : ' + CACHE_NAME);
     event.waitUntil(self.clients.claim());
   });
 
