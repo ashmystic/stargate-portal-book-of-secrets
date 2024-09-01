@@ -1,4 +1,4 @@
-var CACHE_NAME = 'stargateportal-cache-v1';
+var CACHE_NAME = 'stargateportal-cache-v2';
 var urlsToCache = [
   './',
   'index.html',
@@ -10,6 +10,14 @@ var urlsToCache = [
   'images/nibiru.WEBP',
   'images/pleiades.WEBP',
   'images/sirius.WEBP',
+  'images/giza_animated.gif',
+  'images/teotihuacan_animated.gif',
+  'music/giza.mp3',
+  'music/teotihuacan.mp3',
+  'music/gobekli_tepe.mp3',
+  'music/nibiru.mp3',
+  'music/lemuria.mp3',
+  'music/sirius.mp3',
   'fonts/obelisk-mxvv-font/ObeliskMxvvRegular-RGj6.ttf',
   'offline.html',
 ];

@@ -1,7 +1,7 @@
     <html lang="en" manifest="manifest.appcache">
     <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>v0.8.3 Book of Secrets Volume 1: Stargate Portal</title>
+    <title>v0.8.4 Book of Secrets Volume 1: Stargate Portal</title>
     <link rel="stylesheet" href="css/button.css">
     <style>
     @font-face {
@@ -45,14 +45,14 @@
         max-width: 640px;
     }
     
-    .control-panel {
+    /* .control-panel {
         width: 200px;
         padding: 20px;
         background-color: #1a1a1a;
         border-radius: 10px;
         margin-bottom: 20px;
         text-align: center;
-    }
+    } */
     
     .canvas-container {
         box-shadow: 0 0 20px rgba(66, 133, 244, 0.5);
@@ -88,12 +88,12 @@
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-template-rows: repeat(2, 1fr 1fr);
-        gap: 2px;
-        padding: 2px;
-        padding-bottom: 10px;
+        gap: 5px;
+        padding: 10px;
         width: 100%;
         height: 142px;
         box-sizing: border-box;
+        margin-bottom: 40px;
     }
     
     .button-grid label {
@@ -220,6 +220,7 @@
         <div class="canvas-container">
             <canvas id="glCanvas" width="320" height="568"></canvas>
             <img id="displayImage" class="hidden-image" src="images/giza.WEBP" alt="Giza" width="320" height="320">
+            <audio id="audioPlayer"></audio>
             <div class="button-grid">
                 <label class="clip-text">Terra</label>
                 <!-- <button id="btnGiza">Giza</button>
@@ -247,7 +248,7 @@
                     <span class="control-button-shadow"></span>
                     <span class="control-button-edge"></span>
                     <span class="control-button-front text">
-                      Gobekli Tepe
+                      Göbekli Tepe
                     </span>
                 </button>
                 <label class="clip-text">Exoterra</label>
@@ -430,11 +431,15 @@
     let targetRippleIntensity = 0.0; 
     let transitionTimeout = null;
     let imageTimeout = null;
+    let audioFadeInterval = null;
     let deactivateStargateTimeout = null;
     let particlesVisible = false;
     let rippleTransitionTimeMS = 3000;
-    let imageTimeoutTimeMS = 15000;
+    // let imageTimeoutTimeMS = 15000;
+    let imageTimeoutTimeMS = 55000;
     let deactivateStargateTimeoutTimeMS = 12000;
+    let audioTransitionTimeMS = 75;
+    let audioFadeTimeMS = 75;
     
     function updateWaves() {
         const currentTime = (Date.now() - startTime) / 1000;
@@ -466,6 +471,7 @@
     
     const displayImage = document.getElementById('displayImage');
     const particleContainer = document.getElementById('particleContainer');
+    const audioPlayer = document.getElementById('audioPlayer');
    
     const buttons = document.querySelectorAll('.button-grid button');
     function toggleButtonsDisability() {
@@ -523,8 +529,35 @@
     };
     
     createParticles();
+
+    const fadeOutAudio = (fadeOutTransitionTimeMS, callback) => {
+        clearInterval(audioFadeInterval);
+        audioFadeInterval = setInterval(() => {
+            if (audioPlayer.volume > 0.02) {
+                audioPlayer.volume -= 0.02;
+            } else {
+                clearInterval(audioFadeInterval);
+                audioPlayer.pause();
+                audioPlayer.volume = 1;
+                if (callback) callback();
+            }
+        }, fadeOutTransitionTimeMS);
+    };
+
+    const fadeInAudio = () => {
+        clearInterval(audioFadeInterval);
+        audioPlayer.volume = 0;
+        audioPlayer.play();
+        audioFadeInterval = setInterval(() => {
+            if (audioPlayer.volume < 0.9) {
+                audioPlayer.volume += 0.01; // Fade in
+            } else {
+                clearInterval(audioFadeInterval);
+            }
+        }, 100);
+    };
     
-    const transitionWithRipples = (src, alt, particleColor = 'gold') => {
+    const transitionWithRipples = (src, alt, particleColor = 'gold', audioSrc) => {
         if(transitionTimeout !== null) {
             // return;
         }
@@ -532,15 +565,25 @@
         if (imageTimeout) {
             clearTimeout(imageTimeout);
         }
-    
         hideImageAndParticles();
         targetRippleIntensity = 1.0;
+        fadeOutAudio(audioTransitionTimeMS); // Fade out between locations
         toggleButtonsDisability(); // Disable buttons while loading
         transitionTimeout = setTimeout(() => {
             showImageAndParticles(src, alt, particleColor);
             createParticles(particleColor);
+            if (!audioPlayer.paused) {
+                fadeOutAudio(audioTransitionTimeMS, () => {
+                    audioPlayer.src = audioSrc; 
+                    fadeInAudio();
+                });
+            } else {
+                audioPlayer.src = audioSrc; 
+                fadeInAudio();
+            }
             imageTimeout = setTimeout(() => {
                 hideImageAndParticles();
+                fadeOutAudio(audioFadeTimeMS); // Fade out after stargate closes
                 deactivateStargateTimeout = setTimeout(() => {
                     targetRippleIntensity = 0.0;
                     }, deactivateStargateTimeoutTimeMS); // transition time from image inactivity to black screen (12s)
@@ -550,13 +593,12 @@
         }, rippleTransitionTimeMS); // transition time from one image to the next (3s)
     };
     
-    // document.getElementById('btnGiza').addEventListener('click', () => transitionWithRipples('https://i.ibb.co/r62t5K9/giza.webp', 'Giza Pyramids under a clear sky'));
-    document.getElementById('btnGiza').addEventListener('click', () => transitionWithRipples('images/giza.WEBP', 'Giza Pyramids under a clear sky'));
-    document.getElementById('btnTeotihuacan').addEventListener('click', () => transitionWithRipples('images/teotihuacan.WEBP', 'Ancient pyramids of Teotihuacan', 'purple'));
-    document.getElementById('btnGobekliTepe').addEventListener('click', () => transitionWithRipples('images/gobekli-tepe.WEBP', 'Ancient site of Gobekli Tepe', 'green'));
-    document.getElementById('btnNibiru').addEventListener('click', () => transitionWithRipples('images/nibiru.WEBP', 'Planet Nibiru in space', 'red'));
-    document.getElementById('btnPleiades').addEventListener('click', () => transitionWithRipples('images/pleiades.WEBP', 'The Pleiades star cluster', 'pink'));
-    document.getElementById('btnSirius').addEventListener('click', () => transitionWithRipples('images/sirius.WEBP', 'Bright star in the night sky representing Sirius', 'teal'));
+    document.getElementById('btnGiza').addEventListener('click', () => transitionWithRipples('images/giza_animated.gif', 'Giza Pyramids under a clear sky', 'gold', 'music/giza.mp3'));
+    document.getElementById('btnTeotihuacan').addEventListener('click', () => transitionWithRipples('images/teotihuacan_animated.gif', 'Ancient pyramids of Teotihuacan', 'purple', 'music/teotihuacan.mp3'));
+    document.getElementById('btnGobekliTepe').addEventListener('click', () => transitionWithRipples('images/gobekli-tepe.WEBP', 'Ancient site of Gobekli Tepe', 'green', 'music/gobekli_tepe.mp3'));
+    document.getElementById('btnNibiru').addEventListener('click', () => transitionWithRipples('images/nibiru.WEBP', 'Planet Nibiru in space', 'red', 'music/nibiru.mp3'));
+    document.getElementById('btnPleiades').addEventListener('click', () => transitionWithRipples('images/pleiades.WEBP', 'The Pleiades star cluster', 'pink', 'music/lemuria.mp3'));
+    document.getElementById('btnSirius').addEventListener('click', () => transitionWithRipples('images/sirius.WEBP', 'Bright star in the night sky representing Sirius', 'teal', 'music/sirius.mp3'));
     
     // canvas.addEventListener('mousemove', (event) => {
     //     const rect = canvas.getBoundingClientRect();
