@@ -535,6 +535,7 @@
     let currentAudioBuffer;
     let isAudioInitialized = false;
     let currentSourceIndex = 0;
+    let silentAudioUrl = 'music/transition.mp3'; // Update this to the correct path of your silent audio file
 
     // Initialize Web Audio API
     function initAudio() {
@@ -616,17 +617,22 @@
         }
         hideImageAndParticles();
         targetRippleIntensity = 1.0;
-        
+
         toggleButtonsDisability(); // Disable buttons while loading
         
-        // Start loading and playing new audio immediately
-        loadAndPlayAudio(audioSrc);
+        // Start transition to silent audio immediately
+        loadAndPlayAudio(silentAudioUrl);
 
         transitionTimeout = setTimeout(() => {
+            // Load and play new audio when image appears
+            loadAndPlayAudio(audioSrc);
+
             showImageAndParticles(src, alt, particleColor);
             createParticles(particleColor);
             imageTimeout = setTimeout(() => {
                 hideImageAndParticles();
+                // Transition back to silent audio
+                loadAndPlayAudio(silentAudioUrl);
                 deactivateStargateTimeout = setTimeout(() => {
                     targetRippleIntensity = 0.0;
                 }, deactivateStargateTimeoutTimeMS);
