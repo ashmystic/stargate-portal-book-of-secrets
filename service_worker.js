@@ -1,23 +1,28 @@
-var CACHE_NAME = 'stargateportal-cache-v3';
+var CACHE_NAME = 'stargateportal-cache-v4';
 var urlsToCache = [
   './',
   'index.html',
   'offline.html',
   'css/button.css',
   'fonts/obelisk-mxvv-font/ObeliskMxvvRegular-RGj6.ttf',
-  // 'images/giza.WEBP',
-  // 'images/teotihuacan.WEBP',
-  // 'images/gobekli-tepe.WEBP',
-  // 'images/nibiru.WEBP',
-  // 'images/pleiades.WEBP',
-  // 'images/sirius.WEBP',
   'images/bedge-grunge.png',
+
   'images/animated/giza_animated.gif',
   'images/animated/teotihuacan_animated.gif',
   'images/animated/gobekli-tepe_animated.gif',
   'images/animated/nibiru_animated.gif',
   'images/animated/pleiades_animated.gif',
   'images/animated/sirius_animated.gif',
+
+  // 'images/giza.WEBP',
+  // 'images/teotihuacan.WEBP',
+  // 'images/gobekli-tepe.WEBP',
+  // 'images/nibiru.WEBP',
+  // 'images/pleiades.WEBP',
+  // 'images/sirius.WEBP',
+
+
+
   'music/giza.mp3',
   'music/teotihuacan.mp3',
   'music/gobekli_tepe.mp3',
