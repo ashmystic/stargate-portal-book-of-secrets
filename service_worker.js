@@ -7,28 +7,26 @@ var urlsToCache = [
   'fonts/obelisk-mxvv-font/ObeliskMxvvRegular-RGj6.ttf',
   'images/bedge-grunge.png',
 
-  'images/animated/giza_animated.gif',
-  'images/animated/teotihuacan_animated.gif',
-  'images/animated/gobekli-tepe_animated.gif',
+  // 'images/animated/giza_animated.gif',
+  // 'images/animated/teotihuacan_animated.gif',
+  // 'images/animated/gobekli-tepe_animated.gif',
   // 'images/animated/nibiru_animated.gif',
   // 'images/animated/pleiades_animated.gif',
   // 'images/animated/sirius_animated.gif',
 
-  'images/giza.WEBP',
-  'images/teotihuacan.WEBP',
-  'images/gobekli-tepe.WEBP',
-  // 'images/nibiru.WEBP',
-  // 'images/pleiades.WEBP',
-  // 'images/sirius.WEBP',
+  'images/static/giza.WEBP',
+  'images/static/teotihuacan.WEBP',
+  'images/static/gobekli-tepe.WEBP',
+  'images/static/nibiru.WEBP',
+  'images/static/pleiades.WEBP',
+  'images/static/sirius.WEBP',
 
-
-
-  'music/giza.mp3',
-  'music/teotihuacan.mp3',
-  'music/gobekli_tepe.mp3',
-  'music/nibiru.mp3',
-  'music/lemuria.mp3',
-  'music/sirius.mp3',
+  // 'music/giza.mp3',
+  // 'music/teotihuacan.mp3',
+  // 'music/gobekli_tepe.mp3',
+  // 'music/nibiru.mp3',
+  // 'music/lemuria.mp3',
+  // 'music/sirius.mp3',
 ];
 
 // Set to true to enable logging, false to disable
