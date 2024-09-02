@@ -1,4 +1,4 @@
-var CACHE_NAME = 'stargateportal-cache-v4';
+var CACHE_NAME = 'stargateportal-cache-v5';
 var urlsToCache = [
   './',
   'index.html',
