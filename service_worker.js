@@ -1,4 +1,4 @@
-var CACHE_NAME = 'stargateportal-cache-v5';
+var CACHE_NAME = 'stargateportal-cache-v6';
 var urlsToCache = [
   './',
   'index.html',
@@ -21,12 +21,12 @@ var urlsToCache = [
   'images/static/pleiades.WEBP',
   'images/static/sirius.WEBP',
 
-  // 'music/giza.mp3',
-  // 'music/teotihuacan.mp3',
-  // 'music/gobekli_tepe.mp3',
-  // 'music/nibiru.mp3',
-  // 'music/lemuria.mp3',
-  // 'music/sirius.mp3',
+  'music/giza.mp3',
+  'music/teotihuacan.mp3',
+  'music/gobekli_tepe.mp3',
+  'music/nibiru.mp3',
+  'music/lemuria.mp3',
+  'music/sirius.mp3',
 ];
 
 // Set to true to enable logging, false to disable

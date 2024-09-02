@@ -540,7 +540,7 @@
 
     // Initialize Web Audio API
     function initAudio() {
-        return;
+        // return;
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
         for (let i = 0; i < 2; i++) {
             let gainNode = audioContext.createGain();
@@ -553,7 +553,7 @@
 
     // Load and play audio
     function loadAndPlayAudio(url) {
-        return;
+        // return;
         if (!isAudioInitialized) {
             initAudio();
         }
