@@ -1,4 +1,4 @@
-var CACHE_NAME = 'stargateportal-cache-v6';
+var CACHE_NAME = 'stargateportal-cache-v7';
 var urlsToCache = [
   './',
   'index.html',
@@ -7,19 +7,19 @@ var urlsToCache = [
   'fonts/obelisk-mxvv-font/ObeliskMxvvRegular-RGj6.ttf',
   'images/bedge-grunge.png',
 
-  // 'images/animated/giza_animated.gif',
-  // 'images/animated/teotihuacan_animated.gif',
-  // 'images/animated/gobekli-tepe_animated.gif',
-  // 'images/animated/nibiru_animated.gif',
-  // 'images/animated/pleiades_animated.gif',
-  // 'images/animated/sirius_animated.gif',
+  'images/animated/giza_animated.gif',
+  'images/animated/teotihuacan_animated.gif',
+  'images/animated/gobekli-tepe_animated.gif',
+  'images/animated/nibiru_animated.gif',
+  'images/animated/pleiades_animated.gif',
+  'images/animated/sirius_animated.gif',
 
-  'images/static/giza.WEBP',
-  'images/static/teotihuacan.WEBP',
-  'images/static/gobekli-tepe.WEBP',
-  'images/static/nibiru.WEBP',
-  'images/static/pleiades.WEBP',
-  'images/static/sirius.WEBP',
+  // 'images/static/giza.WEBP',
+  // 'images/static/teotihuacan.WEBP',
+  // 'images/static/gobekli-tepe.WEBP',
+  // 'images/static/nibiru.WEBP',
+  // 'images/static/pleiades.WEBP',
+  // 'images/static/sirius.WEBP',
 
   'music/giza.mp3',
   'music/teotihuacan.mp3',
