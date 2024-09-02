@@ -535,7 +535,7 @@
     let currentAudioBuffer;
     let isAudioInitialized = false;
     let currentSourceIndex = 0;
-    let silentAudioUrl = 'music/transition.mp3'; // Update this to the correct path of your silent audio file
+    let silentAudioUrl = 'music/transition.mp3';
 
     // Initialize Web Audio API
     function initAudio() {
@@ -603,18 +603,25 @@
         }, audioTransitionTimeMS);
     }
 
+    let currentDeactivateStargateTimeout = null;
+
     const transitionWithRipples = (src, alt, particleColor = 'gold', audioSrc) => {
         if (!isAudioInitialized) {
             initAudio();
         }
 
-        if(transitionTimeout !== null) {
+        if (transitionTimeout !== null) {
             clearTimeout(transitionTimeout);
         }
 
         if (imageTimeout) {
             clearTimeout(imageTimeout);
         }
+
+        if (currentDeactivateStargateTimeout) {
+            clearTimeout(currentDeactivateStargateTimeout);
+        }
+
         hideImageAndParticles();
         targetRippleIntensity = 1.0;
 
@@ -633,7 +640,8 @@
                 hideImageAndParticles();
                 // Transition back to silent audio
                 loadAndPlayAudio(silentAudioUrl);
-                deactivateStargateTimeout = setTimeout(() => {
+                targetRippleIntensity = 1.0; // Reactivate ripples
+                currentDeactivateStargateTimeout = setTimeout(() => {
                     targetRippleIntensity = 0.0;
                 }, deactivateStargateTimeoutTimeMS);
             }, imageTimeoutTimeMS);
@@ -651,10 +659,10 @@
 
     document.getElementById('btnGiza').addEventListener('click', () => transitionWithRipples('images/giza_animated.gif', 'Giza Pyramids under a clear sky', 'gold', 'music/giza.mp3'));
     document.getElementById('btnTeotihuacan').addEventListener('click', () => transitionWithRipples('images/teotihuacan_animated.gif', 'Ancient pyramids of Teotihuacan', 'purple', 'music/teotihuacan.mp3'));
-    document.getElementById('btnGobekliTepe').addEventListener('click', () => transitionWithRipples('images/gobekli-tepe.WEBP', 'Ancient site of Gobekli Tepe', 'green', 'music/gobekli_tepe.mp3'));
-    document.getElementById('btnNibiru').addEventListener('click', () => transitionWithRipples('images/nibiru.WEBP', 'Planet Nibiru in space', 'red', 'music/nibiru.mp3'));
-    document.getElementById('btnPleiades').addEventListener('click', () => transitionWithRipples('images/pleiades.WEBP', 'The Pleiades star cluster', 'pink', 'music/lemuria.mp3'));
-    document.getElementById('btnSirius').addEventListener('click', () => transitionWithRipples('images/sirius.WEBP', 'Bright star in the night sky representing Sirius', 'teal', 'music/sirius.mp3'));
+    document.getElementById('btnGobekliTepe').addEventListener('click', () => transitionWithRipples('images/gobekli-tepe_animated.gif', 'Ancient site of Gobekli Tepe', 'green', 'music/gobekli_tepe.mp3'));
+    document.getElementById('btnNibiru').addEventListener('click', () => transitionWithRipples('images/nibiru_animated.gif', 'Planet Nibiru in space', 'red', 'music/nibiru.mp3'));
+    document.getElementById('btnPleiades').addEventListener('click', () => transitionWithRipples('images/pleiades_animated.gif', 'The Pleiades star cluster', 'pink', 'music/lemuria.mp3'));
+    document.getElementById('btnSirius').addEventListener('click', () => transitionWithRipples('images/sirius_animated.gif', 'Bright star in the night sky representing Sirius', 'teal', 'music/sirius.mp3'));
     
     // canvas.addEventListener('mousemove', (event) => {
     //     const rect = canvas.getBoundingClientRect();
