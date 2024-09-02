@@ -1,17 +1,24 @@
 CACHE MANIFEST
-# Version 1.0
+# Version 1.1
 
 CACHE:
 index.html
 css/button.css
-images/bedge-grunge.png
-images/giza.WEBP
-images/teotihuacan.WEBP
-images/gobekli-tepe.WEBP
-images/nibiru.WEBP
-images/pleiades.WEBP
-images/sirius.WEBP
 fonts/obelisk-mxvv-font/ObeliskMxvvRegular-RGj6.ttf
+images/bedge-grunge.png
+images/animated/giza_animated.gif
+images/animated/teotihuacan_animated.gif
+images/animated/gobekli-tepe_animated.gif
+images/animated/nibiru_animated.gif
+images/animated/pleiades_animated.gif
+images/animated/sirius_animated.gif
+music/giza.mp3
+music/teotihuacan.mp3
+music/gobekli_tepe.mp3
+music/nibiru.mp3
+music/lemuria.mp3
+music/sirius.mp3
+
 
 NETWORK:
 *
