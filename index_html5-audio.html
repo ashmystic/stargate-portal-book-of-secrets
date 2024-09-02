@@ -1,5 +1,4 @@
-    <!-- <html lang="en" manifest="manifest.appcache"> -->
-    <html lang="en">
+<html lang="en" manifest="manifest.appcache">
     <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>v0.8.4 Book of Secrets Volume 1: Stargate Portal</title>
@@ -221,6 +220,7 @@
         <div class="canvas-container">
             <canvas id="glCanvas" width="320" height="568"></canvas>
             <img id="displayImage" class="hidden-image" src="images/giza.WEBP" alt="Giza" width="320" height="320">
+            <audio id="audioPlayer"></audio>
             <div class="button-grid">
                 <label class="clip-text">Terra</label>
                 <!-- <button id="btnGiza">Giza</button>
@@ -438,8 +438,8 @@
     // let imageTimeoutTimeMS = 15000;
     let imageTimeoutTimeMS = 55000;
     let deactivateStargateTimeoutTimeMS = 12000;
-    let audioTransitionTimeMS = 3000; // 3 seconds fade
-    let audioFadeTimeMS = 5000; // 5 seconds fade
+    let audioTransitionTimeMS = 75;
+    let audioFadeTimeMS = 75;
     
     function updateWaves() {
         const currentTime = (Date.now() - startTime) / 1000;
@@ -471,7 +471,8 @@
     
     const displayImage = document.getElementById('displayImage');
     const particleContainer = document.getElementById('particleContainer');
-    
+    const audioPlayer = document.getElementById('audioPlayer');
+   
     const buttons = document.querySelectorAll('.button-grid button');
     function toggleButtonsDisability() {
     buttons.forEach(btn => {
@@ -529,70 +530,36 @@
     
     createParticles();
 
-    let audioContext;
-    let gainNode;
-    let audioSource;
-    let currentAudioBuffer;
-
-    // Initialize Web Audio API
-    function initAudio() {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        gainNode = audioContext.createGain();
-        gainNode.connect(audioContext.destination);
-        gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-    }
-
-    // Load and play audio
-    function loadAndPlayAudio(url) {
-        fetch(url)
-            .then(response => response.arrayBuffer())
-            .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
-            .then(audioBuffer => {
-                if (audioSource) {
-                    audioSource.stop();
-                }
-                audioSource = audioContext.createBufferSource();
-                audioSource.buffer = audioBuffer;
-                audioSource.connect(gainNode);
-                
-                // Ensure the gain is set to 0 before playing
-                gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-                
-                audioSource.start();
-                currentAudioBuffer = audioBuffer;
-                
-                // Fade in immediately after starting the audio
-                fadeInAudio(audioTransitionTimeMS);
-            })
-            .catch(e => console.error('Error with decoding audio data' + e.err));
-    }
-
     const fadeOutAudio = (fadeOutTransitionTimeMS, callback) => {
-        const startTime = audioContext.currentTime;
-        const endTime = startTime + fadeOutTransitionTimeMS / 1000;
-        gainNode.gain.setValueAtTime(gainNode.gain.value, startTime);
-        gainNode.gain.linearRampToValueAtTime(0, endTime);
-
-        setTimeout(() => {
-            if (audioSource) {
-                audioSource.stop();
+        clearInterval(audioFadeInterval);
+        audioFadeInterval = setInterval(() => {
+            if (audioPlayer.volume > 0.02) {
+                audioPlayer.volume -= 0.02;
+            } else {
+                clearInterval(audioFadeInterval);
+                audioPlayer.pause();
+                audioPlayer.volume = 1;
+                if (callback) callback();
             }
-            if (callback) callback();
         }, fadeOutTransitionTimeMS);
     };
 
-    const fadeInAudio = (fadeInTransitionTimeMS) => {
-        const startTime = audioContext.currentTime;
-        const endTime = startTime + fadeInTransitionTimeMS / 1000;
-        gainNode.gain.setValueAtTime(0, startTime);
-        gainNode.gain.linearRampToValueAtTime(1, endTime);
-        // console.log('Fade-in started. Duration:', fadeInTransitionTimeMS, 'ms');
+    const fadeInAudio = () => {
+        clearInterval(audioFadeInterval);
+        audioPlayer.volume = 0;
+        audioPlayer.play();
+        audioFadeInterval = setInterval(() => {
+            if (audioPlayer.volume < 0.9) {
+                audioPlayer.volume += 0.01; // Fade in
+            } else {
+                clearInterval(audioFadeInterval);
+            }
+        }, 100);
     };
-
-    // Modify the transitionWithRipples function
+    
     const transitionWithRipples = (src, alt, particleColor = 'gold', audioSrc) => {
         if(transitionTimeout !== null) {
-            clearTimeout(transitionTimeout);
+            // return;
         }
 
         if (imageTimeout) {
@@ -600,34 +567,32 @@
         }
         hideImageAndParticles();
         targetRippleIntensity = 1.0;
-        
-        // Start fading out the current audio immediately when ripples begin
-        if (audioSource) {
-            fadeOutAudio(audioTransitionTimeMS);
-        }
-
+        fadeOutAudio(audioTransitionTimeMS); // Fade out between locations
         toggleButtonsDisability(); // Disable buttons while loading
-        
         transitionTimeout = setTimeout(() => {
-            // Load and play new audio when image appears
-            loadAndPlayAudio(audioSrc);
-
             showImageAndParticles(src, alt, particleColor);
             createParticles(particleColor);
+            if (!audioPlayer.paused) {
+                fadeOutAudio(audioTransitionTimeMS, () => {
+                    audioPlayer.src = audioSrc; 
+                    fadeInAudio();
+                });
+            } else {
+                audioPlayer.src = audioSrc; 
+                fadeInAudio();
+            }
             imageTimeout = setTimeout(() => {
                 hideImageAndParticles();
-                fadeOutAudio(audioFadeTimeMS);
+                fadeOutAudio(audioFadeTimeMS); // Fade out after stargate closes
                 deactivateStargateTimeout = setTimeout(() => {
                     targetRippleIntensity = 0.0;
-                }, deactivateStargateTimeoutTimeMS);
-            }, imageTimeoutTimeMS);
-            toggleButtonsDisability();
-        }, rippleTransitionTimeMS);
+                    }, deactivateStargateTimeoutTimeMS); // transition time from image inactivity to black screen (12s)
+                    }, imageTimeoutTimeMS); // time image stays up before automatically fading out (15s)
+                toggleButtonsDisability(); // Disable buttons while loading
+                // transitionTimeout = null;
+        }, rippleTransitionTimeMS); // transition time from one image to the next (3s)
     };
-
-    // Initialize audio when the page loads
-    window.addEventListener('load', initAudio);
-
+    
     document.getElementById('btnGiza').addEventListener('click', () => transitionWithRipples('images/giza_animated.gif', 'Giza Pyramids under a clear sky', 'gold', 'music/giza.mp3'));
     document.getElementById('btnTeotihuacan').addEventListener('click', () => transitionWithRipples('images/teotihuacan_animated.gif', 'Ancient pyramids of Teotihuacan', 'purple', 'music/teotihuacan.mp3'));
     document.getElementById('btnGobekliTepe').addEventListener('click', () => transitionWithRipples('images/gobekli-tepe.WEBP', 'Ancient site of Gobekli Tepe', 'green', 'music/gobekli_tepe.mp3'));
