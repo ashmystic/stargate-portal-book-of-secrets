@@ -530,67 +530,83 @@
     createParticles();
 
     let audioContext;
-    let gainNode;
-    let audioSource;
+    let gainNodes = [];
+    let audioSources = [];
     let currentAudioBuffer;
+    let isAudioInitialized = false;
+    let currentSourceIndex = 0;
 
     // Initialize Web Audio API
     function initAudio() {
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        gainNode = audioContext.createGain();
-        gainNode.connect(audioContext.destination);
-        gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+        for (let i = 0; i < 2; i++) {
+            let gainNode = audioContext.createGain();
+            gainNode.connect(audioContext.destination);
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            gainNodes.push(gainNode);
+        }
+        isAudioInitialized = true;
     }
 
     // Load and play audio
     function loadAndPlayAudio(url) {
+        if (!isAudioInitialized) {
+            initAudio();
+        }
+        
         fetch(url)
             .then(response => response.arrayBuffer())
             .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
             .then(audioBuffer => {
-                if (audioSource) {
-                    audioSource.stop();
+                const nextSourceIndex = (currentSourceIndex + 1) % 2;
+                
+                if (audioSources[nextSourceIndex]) {
+                    audioSources[nextSourceIndex].stop();
                 }
-                audioSource = audioContext.createBufferSource();
-                audioSource.buffer = audioBuffer;
-                audioSource.connect(gainNode);
+                
+                audioSources[nextSourceIndex] = audioContext.createBufferSource();
+                audioSources[nextSourceIndex].buffer = audioBuffer;
+                audioSources[nextSourceIndex].connect(gainNodes[nextSourceIndex]);
                 
                 // Ensure the gain is set to 0 before playing
-                gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+                gainNodes[nextSourceIndex].gain.setValueAtTime(0, audioContext.currentTime);
                 
-                audioSource.start();
+                audioSources[nextSourceIndex].start();
                 currentAudioBuffer = audioBuffer;
                 
-                // Fade in immediately after starting the audio
-                fadeInAudio(audioTransitionTimeMS);
+                // Crossfade
+                crossfade(nextSourceIndex);
+                
+                currentSourceIndex = nextSourceIndex;
             })
             .catch(e => console.error('Error with decoding audio data' + e.err));
     }
 
-    const fadeOutAudio = (fadeOutTransitionTimeMS, callback) => {
-        const startTime = audioContext.currentTime;
-        const endTime = startTime + fadeOutTransitionTimeMS / 1000;
-        gainNode.gain.setValueAtTime(gainNode.gain.value, startTime);
-        gainNode.gain.linearRampToValueAtTime(0, endTime);
+    function crossfade(newSourceIndex) {
+        const currentTime = audioContext.currentTime;
+        const fadeOutIndex = currentSourceIndex;
+        
+        // Fade out the current source
+        gainNodes[fadeOutIndex].gain.setValueAtTime(gainNodes[fadeOutIndex].gain.value, currentTime);
+        gainNodes[fadeOutIndex].gain.linearRampToValueAtTime(0, currentTime + audioTransitionTimeMS / 1000);
+        
+        // Fade in the new source
+        gainNodes[newSourceIndex].gain.setValueAtTime(0, currentTime);
+        gainNodes[newSourceIndex].gain.linearRampToValueAtTime(1, currentTime + audioTransitionTimeMS / 1000);
 
+        // Schedule stopping the faded-out source
         setTimeout(() => {
-            if (audioSource) {
-                audioSource.stop();
+            if (audioSources[fadeOutIndex]) {
+                audioSources[fadeOutIndex].stop();
             }
-            if (callback) callback();
-        }, fadeOutTransitionTimeMS);
-    };
+        }, audioTransitionTimeMS);
+    }
 
-    const fadeInAudio = (fadeInTransitionTimeMS) => {
-        const startTime = audioContext.currentTime;
-        const endTime = startTime + fadeInTransitionTimeMS / 1000;
-        gainNode.gain.setValueAtTime(0, startTime);
-        gainNode.gain.linearRampToValueAtTime(1, endTime);
-        // console.log('Fade-in started. Duration:', fadeInTransitionTimeMS, 'ms');
-    };
-
-    // Modify the transitionWithRipples function
     const transitionWithRipples = (src, alt, particleColor = 'gold', audioSrc) => {
+        if (!isAudioInitialized) {
+            initAudio();
+        }
+
         if(transitionTimeout !== null) {
             clearTimeout(transitionTimeout);
         }
@@ -601,22 +617,16 @@
         hideImageAndParticles();
         targetRippleIntensity = 1.0;
         
-        // Start fading out the current audio immediately when ripples begin
-        if (audioSource) {
-            fadeOutAudio(audioTransitionTimeMS);
-        }
-
         toggleButtonsDisability(); // Disable buttons while loading
         
-        transitionTimeout = setTimeout(() => {
-            // Load and play new audio when image appears
-            loadAndPlayAudio(audioSrc);
+        // Start loading and playing new audio immediately
+        loadAndPlayAudio(audioSrc);
 
+        transitionTimeout = setTimeout(() => {
             showImageAndParticles(src, alt, particleColor);
             createParticles(particleColor);
             imageTimeout = setTimeout(() => {
                 hideImageAndParticles();
-                fadeOutAudio(audioFadeTimeMS);
                 deactivateStargateTimeout = setTimeout(() => {
                     targetRippleIntensity = 0.0;
                 }, deactivateStargateTimeoutTimeMS);
@@ -625,8 +635,13 @@
         }, rippleTransitionTimeMS);
     };
 
-    // Initialize audio when the page loads
-    window.addEventListener('load', initAudio);
+    // Initialize audio on the first user interaction
+    document.body.addEventListener('click', function initAudioOnFirstInteraction() {
+        if (!isAudioInitialized) {
+            initAudio();
+        }
+        document.body.removeEventListener('click', initAudioOnFirstInteraction);
+    }, { once: true });
 
     document.getElementById('btnGiza').addEventListener('click', () => transitionWithRipples('images/giza_animated.gif', 'Giza Pyramids under a clear sky', 'gold', 'music/giza.mp3'));
     document.getElementById('btnTeotihuacan').addEventListener('click', () => transitionWithRipples('images/teotihuacan_animated.gif', 'Ancient pyramids of Teotihuacan', 'purple', 'music/teotihuacan.mp3'));
