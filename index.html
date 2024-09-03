@@ -207,6 +207,10 @@
         -webkit-background-clip: text;
         filter: brightness(1.5);
     }
+
+    .button-grid button.selected .control-button-front {
+        color: gold !important;
+    }
     </style></head>
     <body>
     <!-- <div class="header">
@@ -644,6 +648,10 @@
                 // Transition back to silent audio
                 loadAndPlayAudio(silentAudioUrl);
                 targetRippleIntensity = 1.0; // Reactivate ripples
+                // Reset button selection
+                document.querySelectorAll('.button-grid button').forEach(button => {
+                        button.classList.remove('selected');
+                    });
                 currentDeactivateStargateTimeout = setTimeout(() => {
                     targetRippleIntensity = 0.0;
                 }, deactivateStargateTimeoutTimeMS);
@@ -676,13 +684,43 @@
     // let pleiadesImageSrc = 'images/static/pleiades.WEBP';
     // let siriusImageSrc = 'images/static/sirius.WEBP';
 
+    function setSelectedButton(buttonId) {
+        // Remove 'selected' class from all buttons
+        document.querySelectorAll('.button-grid button').forEach(button => {
+            button.classList.remove('selected');
+        });
+        
+        // Add 'selected' class to the clicked button
+        const selectedButton = document.getElementById(buttonId);
+        if (selectedButton) {
+            selectedButton.classList.add('selected');
+        }
+    }
 
-    document.getElementById('btnGiza').addEventListener('click', () => transitionWithRipples(gizaImageSrc, 'Giza Pyramids under a clear sky', 'gold', 'music/giza.mp3'));
-    document.getElementById('btnTeotihuacan').addEventListener('click', () => transitionWithRipples(teotihuacanImageSrc, 'Ancient pyramids of Teotihuacan', 'purple', 'music/teotihuacan.mp3'));
-    document.getElementById('btnGobekliTepe').addEventListener('click', () => transitionWithRipples(gobekliTepeImageSrc, 'Ancient site of Gobekli Tepe', 'green', 'music/gobekli_tepe.mp3'));
-    document.getElementById('btnNibiru').addEventListener('click', () => transitionWithRipples(nibiruImageSrc, 'Planet Nibiru in space', 'red', 'music/nibiru.mp3'));
-    document.getElementById('btnPleiades').addEventListener('click', () => transitionWithRipples(pleiadesImageSrc, 'The Pleiades star cluster', 'pink', 'music/lemuria.mp3'));
-    document.getElementById('btnSirius').addEventListener('click', () => transitionWithRipples(siriusImageSrc, 'Bright star in the night sky representing Sirius', 'teal', 'music/sirius.mp3'));
+    document.getElementById('btnGiza').addEventListener('click', () => {
+        setSelectedButton('btnGiza');
+        transitionWithRipples(gizaImageSrc, 'Giza Pyramids under a clear sky', 'gold', 'music/giza.mp3');
+    });
+    document.getElementById('btnTeotihuacan').addEventListener('click', () => {
+        setSelectedButton('btnTeotihuacan');
+        transitionWithRipples(teotihuacanImageSrc, 'Ancient pyramids of Teotihuacan', 'purple', 'music/teotihuacan.mp3');
+    });
+    document.getElementById('btnGobekliTepe').addEventListener('click', () => {
+        setSelectedButton('btnGobekliTepe');
+        transitionWithRipples(gobekliTepeImageSrc, 'Ancient site of Gobekli Tepe', 'green', 'music/gobekli_tepe.mp3');
+    });
+    document.getElementById('btnNibiru').addEventListener('click', () => {
+        setSelectedButton('btnNibiru');
+        transitionWithRipples(nibiruImageSrc, 'Planet Nibiru in space', 'red', 'music/nibiru.mp3');
+    });
+    document.getElementById('btnPleiades').addEventListener('click', () => {
+        setSelectedButton('btnPleiades');
+        transitionWithRipples(pleiadesImageSrc, 'The Pleiades star cluster', 'pink', 'music/lemuria.mp3');
+    });
+    document.getElementById('btnSirius').addEventListener('click', () => {
+        setSelectedButton('btnSirius');
+        transitionWithRipples(siriusImageSrc, 'Bright star in the night sky representing Sirius', 'teal', 'music/sirius.mp3');
+    });
     
     // canvas.addEventListener('mousemove', (event) => {
     //     const rect = canvas.getBoundingClientRect();
