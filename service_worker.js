@@ -21,6 +21,7 @@ var urlsToCache = [
   // 'images/static/pleiades.WEBP',
   // 'images/static/sirius.WEBP',
 
+  'music/transition.mp3',
   'music/giza.mp3',
   'music/teotihuacan.mp3',
   'music/gobekli_tepe.mp3',
